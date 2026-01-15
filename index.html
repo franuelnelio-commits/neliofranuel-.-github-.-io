@@ -1,23 +1,108 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tugas Komputasi Numerik</title>
+    <title>Tugas Newton Raphson</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 30px;
+        }
+        .container {
+            background: white;
+            max-width: 700px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            text-align: center;
+            padding: 6px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Aplikasi SPNL Metode Newton Raphson</h1>
+<div class="container">
+    <h2>Aplikasi Metode Newton Raphson</h2>
 
     <p>
-        Nama: Nélio Franuel <br>
-        NIM: 202411420026 <br>
+        Nama: <b>Nélio Franuel</b><br>
         Mata Kuliah: Komputasi Numerik
     </p>
 
     <hr>
 
     <p>
-        Website ini digunakan untuk menampilkan
-        aplikasi web solusi persamaan nonlinier
-        menggunakan metode Newton Raphson.
+        Persamaan yang digunakan:<br>
+        <b>f(x) = x³ − x − 2</b>
     </p>
+
+    <label>Nilai Awal (x₀):</label>
+    <input type="number" id="x0" step="any">
+
+    <label>Toleransi:</label>
+    <input type="number" id="tol" step="any" value="0.0001">
+
+    <br><br>
+    <button onclick="hitung()">Hitung</button>
+
+    <div id="hasil"></div>
+</div>
+
+<script>
+function f(x) {
+    return x*x*x - x - 2;
+}
+
+function df(x) {
+    return 3*x*x - 1;
+}
+
+function hitung() {
+    let x = parseFloat(document.getElementById("x0").value);
+    let tol = parseFloat(document.getElementById("tol").value);
+    let iterasi = 0;
+    let error = 1;
+
+    let tabel = "<table><tr><th>Iterasi</th><th>x</th><th>f(x)</th></tr>";
+
+    while (error > tol && iterasi < 20) {
+        let xBaru = x - f(x) / df(x);
+        error = Math.abs(xBaru - x);
+        x = xBaru;
+
+        tabel += "<tr><td>" + iterasi + "</td><td>" + x.toFixed(6) + "</td><td>" + f(x).toFixed(6) + "</td></tr>";
+        iterasi++;
+    }
+
+    tabel += "</table>";
+
+    document.getElementById("hasil").innerHTML =
+        "<h3>Hasil Perhitungan</h3>" +
+        tabel +
+        "<p><b>Akar Persamaan ≈ " + x.toFixed(6) + "</b></p>";
+}
+</script>
 </body>
 </html>
